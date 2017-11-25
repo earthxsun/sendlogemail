@@ -2,15 +2,17 @@ import configparser
 
 def readconf():
     conf = configparser.ConfigParser()
-    conf.read('config.ini',encoding='UTF-8')
-
-    smtpserver = conf.get('config','smtp_server')
-    sender = conf.get('config','sender')
-    password = conf.get('config','password')
-    recipients = conf.get('config','recipients')
-    subject = conf.get('config','Subject')
-
-    confdict = {'smtpsrv':smtpserver,'sender':sender,'pwd':password,'recipients':recipients,'subject':subject}
-    return confdict
+    try:
+        conf.read('config.ini',encoding='UTF-8')
+        smtpserver = conf.get('config','smtp_server')
+        sender = conf.get('config','sender')
+        password = conf.get('config','password')
+        recipients = conf.get('config','recipients')
+        subject = conf.get('config','Subject')
+    except configparser.NoSectionError:
+        print("没有找到配置文件：config.ini或者配置文件里没有config选项")
+    else:
+        confdict = {'smtpsrv':smtpserver,'sender':sender,'pwd':password,'recipients':recipients,'subject':subject}
+        return confdict
 
 
