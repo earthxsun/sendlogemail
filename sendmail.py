@@ -7,11 +7,11 @@ import codecs
 mailparam = readconf()
 
 try:
-    with codecs.open('aaa.txt', encoding='GB2312') as fp:
+    with codecs.open(mailparam['mailcontent'], encoding='GB2312') as fp:
         msg = EmailMessage()
         msg.set_content(fp.read())
 except FileNotFoundError:
-    print("文件aaa.txt没找到")
+    print(mailparam['mailcontent']+"文件没找到")
 else:
     from_addr = mailparam['sender']
     password = mailparam['pwd']
