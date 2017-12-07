@@ -3,11 +3,14 @@ from email.header import Header
 from readinifile import readconf
 import smtplib
 import codecs
+import os
+import sys
 
 mailparam = readconf()
+logfilepath = os.path.dirname(os.path.realpath(sys.argv[0])) + '\\' + mailparam['mailcontent']
 
 try:
-    with codecs.open(mailparam['mailcontent'], encoding='GB2312') as fp:
+    with codecs.open(logfilepath, encoding='GB2312') as fp:
         msg = EmailMessage()
         msg.set_content(fp.read())
 except FileNotFoundError:
@@ -15,7 +18,7 @@ except FileNotFoundError:
 else:
     from_addr = mailparam['sender']
     password = mailparam['pwd']
-    to_addr = mailparam['recipients']
+    to_addr = mailparam['recipients'].split(",")
     smtp_server = mailparam['smtpsrv']
 
     msg['From'] = from_addr
@@ -26,6 +29,6 @@ else:
     server = smtplib.SMTP_SSL(smtp_server, 465)
     server.set_debuglevel(0)
     server.login(from_addr, password)
-    server.sendmail(from_addr, [to_addr], msg.as_string())
+    server.sendmail(from_addr, to_addr, msg.as_string())
     server.quit()
 

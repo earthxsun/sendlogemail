@@ -1,10 +1,14 @@
 import configparser
+import os
+import sys
 
 
 def readconf():
     conf = configparser.ConfigParser()
+    filepath = os.path.dirname(os.path.realpath(sys.argv[0])) + '\\' + 'config.ini'
+
     try:
-        conf.read('config.ini',encoding='GB2312')
+        conf.read(filepath, encoding='GB2312')
         smtpserver = conf.get('config', 'smtp_server')
         sender = conf.get('config', 'sender')
         password = conf.get('config', 'password')
@@ -17,5 +21,4 @@ def readconf():
         confdict = {'smtpsrv': smtpserver, 'sender':sender, 'pwd': password, 'recipients': recipients, 'subject': subject,
                     'mailcontent':mailcontent}
         return confdict
-
 
